@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,10 +28,6 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements IReporter {
     private static final String TAG = "dfroot";
-    private static final String MANAGER_PACKAGE = "com.rifsxd.ksunext";
-    private static final String MANAGER_RELEASE =
-        "https://github.com/KernelSU-Next/KernelSU-Next/releases/download/"
-        + "v3.4.2/KernelSU_Next_v3.4.2_33355-release.apk";
     private ActivityMainBinding binding;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -59,6 +57,11 @@ public class MainActivity extends AppCompatActivity implements IReporter {
         refreshSelinux();
 
         binding.btnRun.setOnClickListener(v -> {
+            if (!ManagerChoice.canLaunch(this)) {
+                refreshRootState();
+                Toast.makeText(this, "Choose a supported installed Manager in Settings", Toast.LENGTH_LONG).show();
+                return;
+            }
             if (running || new File("/dev/df").exists()) return;
             running = true;
             setStatus("WORKING", "Executing DFRoot. Do not restart your phone during this step.",
@@ -107,6 +110,21 @@ public class MainActivity extends AppCompatActivity implements IReporter {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (binding != null && !running) {
@@ -116,37 +134,52 @@ public class MainActivity extends AppCompatActivity implements IReporter {
     }
 
     private void openManager() {
-        Intent launch = getPackageManager().getLaunchIntentForPackage(MANAGER_PACKAGE);
+        Intent launch = getPackageManager().getLaunchIntentForPackage(
+            ManagerChoice.packageName(this));
         if (launch != null) {
             startActivity(launch);
             return;
         }
         try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MANAGER_RELEASE)));
+            startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(ManagerChoice.releaseUrl(this))));
         } catch (Exception e) {
-            Toast.makeText(this, "Unable to open official Manager download",
+            Toast.makeText(this, "Unable to open official Manager release",
                 Toast.LENGTH_LONG).show();
         }
     }
 
     private void updateManagerButton() {
-        boolean installed = getPackageManager()
-            .getLaunchIntentForPackage(MANAGER_PACKAGE) != null;
-        binding.btnManager.setText(installed ?
-            "OPEN KERNELSU NEXT MANAGER" : "INSTALL KERNELSU NEXT MANAGER");
+        String name = ManagerChoice.isNext(this) ? "KERNELSU NEXT" : "KERNELSU CLASSIC";
+        binding.btnManager.setText(
+            (ManagerChoice.isInstalled(this) ? "OPEN " : "GET ") + name + " MANAGER");
     }
 
     private void refreshRootState() {
         if (running) return;
-        boolean rooted = new File("/dev/df").exists();
-        binding.btnRun.setEnabled(!rooted);
-        binding.btnRun.setText(rooted ? "ROOT SESSION ACTIVE" : "START ROOT SESSION");
-        if (rooted) {
-            setStatus("ROOT ACTIVE", "DFRoot device marker detected. The active session may be temporary.",
+        boolean active = new File("/dev/df").exists();
+        boolean next = ManagerChoice.isNext(this);
+        boolean installed = ManagerChoice.isInstalled(this);
+        binding.btnRun.setEnabled(!active && ManagerChoice.canLaunch(this));
+        binding.btnRun.setText(active ? "ROOT SESSION ACTIVE"
+            : !next ? "CLASSIC BACKEND UNAVAILABLE"
+            : !installed ? "INSTALL MANAGER FIRST" : "START ROOT SESSION");
+
+        if (active) {
+            setStatus("ROOT ACTIVE",
+                "DFRoot marker found. Changing the manager selection does not switch an active root backend.",
                 R.color.df_good);
+        } else if (!next) {
+            setStatus("CLASSIC BACKEND UNAVAILABLE",
+                "Classic KernelSU Manager is selectable for installation, but the bundled root backend is Next-only. Select Next to enable root.",
+                R.color.df_warning);
+        } else if (!installed) {
+            setStatus("MANAGER REQUIRED",
+                "Install KernelSU Next Manager before launching the bundled Next root backend.",
+                R.color.df_warning);
         } else {
             setStatus("NOT ACTIVE",
-                "Experimental root environment. Compatibility depends on your exact firmware.",
+                "KernelSU Next selected. Firmware compatibility is not guaranteed.",
                 R.color.df_ice);
         }
         updateManagerButton();

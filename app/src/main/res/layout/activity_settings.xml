@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/df_bg"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/df_bg"
+        app:title="SETTINGS"
+        app:titleTextColor="@color/df_text"
+        app:subtitle="MANAGER / ROOT BACKEND"
+        app:subtitleTextColor="@color/df_muted" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CHOOSE YOUR MANAGER"
+                android:textColor="@color/df_ice"
+                android:textSize="12sp"
+                android:letterSpacing="0.13"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Select which KernelSU app to install or open. The actual root runtime is shown below."
+                android:textColor="@color/df_secondary"
+                android:lineSpacingExtra="4dp"
+                android:textSize="14sp"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:cardBackgroundColor="@color/df_panel"
+                app:strokeColor="@color/df_border"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="24dp">
+                <RadioGroup
+                    android:id="@+id/managerRadioGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="18dp">
+
+                    <RadioButton
+                        android:id="@+id/radioNext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="62dp"
+                        android:buttonTint="@color/df_cyan"
+                        android:text="KernelSU Next"
+                        android:textColor="@color/df_text"
+                        android:textSize="17sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="32dp"
+                        android:paddingBottom="16dp"
+                        android:text="Default • matches this DFRoot build"
+                        android:textColor="@color/df_ice"
+                        android:textSize="12sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/df_border" />
+
+                    <RadioButton
+                        android:id="@+id/radioClassic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:minHeight="62dp"
+                        android:buttonTint="@color/df_cyan"
+                        android:text="KernelSU (Classic / Samsung)"
+                        android:textColor="@color/df_text"
+                        android:textSize="16sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="32dp"
+                        android:text="Manager available • root backend not yet integrated"
+                        android:textColor="@color/df_warning"
+                        android:textSize="12sp" />
+                </RadioGroup>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="SELECTED CONFIGURATION"
+                android:textColor="@color/df_ice"
+                android:textSize="12sp"
+                android:letterSpacing="0.13"
+                android:fontFamily="sans-serif-medium"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="@color/df_panel"
+                app:strokeColor="@color/df_border"
+                app:strokeWidth="1dp"
+                app:cardCornerRadius="24dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/tvSelectedManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="KernelSU Next"
+                        android:textSize="21sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/df_text" />
+
+                    <TextView
+                        android:id="@+id/tvManagerInstalled"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="MANAGER NOT INSTALLED"
+                        android:textColor="@color/df_secondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvBackendCompatibility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="COMPATIBLE BACKEND"
+                        android:textColor="@color/df_cyan"
+                        android:textSize="12sp"
+                        android:letterSpacing="0.06"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:id="@+id/tvBackendDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Loading backend details..."
+                        android:textColor="@color/df_secondary"
+                        android:lineSpacingExtra="4dp"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnInstallSelected"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="22dp"
+                        android:text="GET SELECTED MANAGER"
+                        android:textColor="@color/df_bg"
+                        app:cornerRadius="16dp"
+                        app:backgroundTint="@color/df_cyan" />
+
+                    <TextView
+                        android:id="@+id/tvSourceInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Official GitHub release"
+                        android:textColor="@color/df_muted"
+                        android:textSize="11sp"
+                        android:gravity="center" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center"
+                android:text="The manager app and the in-kernel root backend are separate components. Changing the former does not replace the latter."
+                android:lineSpacingExtra="4dp"
+                android:textColor="@color/df_muted"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

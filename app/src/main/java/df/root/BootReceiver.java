@@ -18,6 +18,10 @@ public class BootReceiver extends BroadcastReceiver implements IReporter {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (!ManagerChoice.canLaunch(context)) {
+            Log.w(TAG, "boot: skipped because no compatible selected and installed backend");
+            return;
+        }
         if (new File("/dev/df").exists()) {
             Log.i(TAG, "boot: already hooked, skipping");
             return;
