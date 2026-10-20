@@ -10,8 +10,8 @@ android {
         applicationId = "df.root"
         minSdk = 32
         targetSdk = 36
-        versionCode = 3
-        versionName = "2.1-premium"
+        versionCode = 4
+        versionName = "2.2-rmg-themes"
 
         ndk {
             abiFilters += listOf("arm64-v8a")
@@ -64,4 +64,5 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
+    implementation("androidx.core:core:1.13.1")
 }

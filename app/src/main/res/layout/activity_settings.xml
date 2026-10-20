@@ -3,104 +3,171 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/df_bg"
+    android:background="?attr/rmgBg"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:background="@color/df_bg"
-        app:title="SETTINGS"
-        app:titleTextColor="@color/df_text"
-        app:subtitle="MANAGER / ROOT BACKEND"
-        app:subtitleTextColor="@color/df_muted" />
+        android:background="?attr/rmgBg"
+        app:title="RMG SETTINGS"
+        app:titleTextColor="?attr/rmgText"
+        app:subtitle="CUSTOMIZATION / MANAGER"
+        app:subtitleTextColor="?attr/rmgMuted" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="36dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CHOOSE YOUR MANAGER"
-                android:textColor="@color/df_ice"
+                android:text="THEME COLLECTION"
+                android:textColor="?attr/rmgIce"
                 android:textSize="12sp"
                 android:letterSpacing="0.13"
-                android:fontFamily="sans-serif-medium"/>
-
+                android:fontFamily="sans-serif-medium" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Select which KernelSU app to install or open. The actual root runtime is shown below."
-                android:textColor="@color/df_secondary"
-                android:lineSpacingExtra="4dp"
-                android:textSize="14sp"/>
+                android:text="Six expertly curated palettes. Your choice applies across both screens immediately."
+                android:textColor="?attr/rmgSecondary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="4dp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:cardBackgroundColor="@color/df_panel"
-                app:strokeColor="@color/df_border"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="?attr/rmgPanel"
+                app:strokeColor="?attr/rmgBorder"
                 app:strokeWidth="1dp"
-                app:cardCornerRadius="24dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
                 <RadioGroup
-                    android:id="@+id/managerRadioGroup"
+                    android:id="@+id/themeGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="18dp">
-
+                    android:padding="18dp"
+                    android:orientation="vertical">
                     <RadioButton
-                        android:id="@+id/radioNext"
+                        android:id="@+id/themeObsidian"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minHeight="62dp"
-                        android:buttonTint="@color/df_cyan"
-                        android:text="KernelSU Next"
-                        android:textColor="@color/df_text"
-                        android:textSize="17sp"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="01  OBSIDIAN   /   DARK CYAN"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif-medium" />
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="32dp"
-                        android:paddingBottom="16dp"
-                        android:text="Default • matches this DFRoot build"
-                        android:textColor="@color/df_ice"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Midnight glass • vivid cyan"
+                        android:textColor="?attr/rmgMuted"
                         android:textSize="12sp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/df_border" />
-
                     <RadioButton
-                        android:id="@+id/radioClassic"
+                        android:id="@+id/themeAurora"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:minHeight="62dp"
-                        android:buttonTint="@color/df_cyan"
-                        android:text="KernelSU (Classic / Samsung)"
-                        android:textColor="@color/df_text"
-                        android:textSize="16sp"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="02  AURORA   /   PURPLE"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
                         android:fontFamily="sans-serif-medium" />
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="32dp"
-                        android:text="Manager available • root backend not yet integrated"
-                        android:textColor="@color/df_warning"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Violet layers • soft mint"
+                        android:textColor="?attr/rmgMuted"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/themeGlacier"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="03  GLACIER   /   ICE BLUE"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Arctic glass • electric blue"
+                        android:textColor="?attr/rmgMuted"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/themeEmber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="04  EMBER   /   COPPER"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Warm graphite • copper glow"
+                        android:textColor="?attr/rmgMuted"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/themeMatrix"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="05  MATRIX   /   LIME"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Deep forest • neon lime"
+                        android:textColor="?attr/rmgMuted"
+                        android:textSize="12sp" />
+                    <RadioButton
+                        android:id="@+id/themeGalaxy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="56dp"
+                        android:buttonTint="?attr/rmgCyan"
+                        android:text="06  RMG HERITAGE   /   IVORY"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="14sp"
+                        android:fontFamily="sans-serif-medium" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="36dp"
+                        android:paddingBottom="12dp"
+                        android:text="Inspired by Root My Galaxy • cream &amp; amber"
+                        android:textColor="?attr/rmgMuted"
                         android:textSize="12sp" />
                 </RadioGroup>
             </com.google.android.material.card.MaterialCardView>
@@ -108,97 +175,107 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="SELECTED CONFIGURATION"
-                android:textColor="@color/df_ice"
+                android:layout_marginTop="26dp"
+                android:text="SU MANAGER"
+                android:textColor="?attr/rmgIce"
                 android:textSize="12sp"
                 android:letterSpacing="0.13"
-                android:fontFamily="sans-serif-medium"/>
+                android:fontFamily="sans-serif-medium" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardBackgroundColor="@color/df_panel"
-                app:strokeColor="@color/df_border"
+                app:cardBackgroundColor="?attr/rmgPanel"
+                app:strokeColor="?attr/rmgBorder"
                 app:strokeWidth="1dp"
-                app:cardCornerRadius="24dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
+                    android:padding="18dp"
+                    android:orientation="vertical">
                     <TextView
-                        android:id="@+id/tvSelectedManager"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="KernelSU Next"
-                        android:textSize="21sp"
-                        android:fontFamily="sans-serif-medium"
-                        android:textColor="@color/df_text" />
-
-                    <TextView
-                        android:id="@+id/tvManagerInstalled"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="MANAGER NOT INSTALLED"
-                        android:textColor="@color/df_secondary"
-                        android:textSize="12sp" />
-
-                    <TextView
-                        android:id="@+id/tvBackendCompatibility"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:text="COMPATIBLE BACKEND"
-                        android:textColor="@color/df_cyan"
-                        android:textSize="12sp"
-                        android:letterSpacing="0.06"
+                        android:text="Choose an installed-compatible Manager"
+                        android:textColor="?attr/rmgText"
+                        android:textSize="16sp"
                         android:fontFamily="sans-serif-medium" />
-
-                    <TextView
-                        android:id="@+id/tvBackendDescription"
+                    <RadioGroup
+                        android:id="@+id/managerGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="Loading backend details..."
-                        android:textColor="@color/df_secondary"
-                        android:lineSpacingExtra="4dp"
-                        android:textSize="13sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnInstallSelected"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="22dp"
-                        android:text="GET SELECTED MANAGER"
-                        android:textColor="@color/df_bg"
-                        app:cornerRadius="16dp"
-                        app:backgroundTint="@color/df_cyan" />
-
+                        android:orientation="vertical">
+                        <RadioButton
+                            android:id="@+id/radioNext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="50dp"
+                            android:buttonTint="?attr/rmgCyan"
+                            android:text="KernelSU Next"
+                            android:textSize="15sp"
+                            android:textColor="?attr/rmgText" />
+                        <RadioButton
+                            android:id="@+id/radioClassic"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="50dp"
+                            android:buttonTint="?attr/rmgCyan"
+                            android:text="KernelSU Classic (Samsung)"
+                            android:textSize="15sp"
+                            android:textColor="?attr/rmgText" />
+                    </RadioGroup>
                     <TextView
-                        android:id="@+id/tvSourceInfo"
+                        android:id="@+id/tvManagerStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="Official GitHub release"
-                        android:textColor="@color/df_muted"
+                        android:layout_marginTop="10dp"
+                        android:text="Detecting manager..."
+                        android:textColor="?attr/rmgIce"
+                        android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/tvBackendNotice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Checking root backend..."
+                        android:textColor="?attr/rmgSecondary"
+                        android:textSize="12sp"
+                        android:lineSpacingExtra="3dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnOfflineInstall"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="18dp"
+                        android:text="INSTALL MANAGER OFFLINE"
+                        android:textColor="?attr/rmgBg"
+                        android:fontFamily="sans-serif-medium"
+                        app:backgroundTint="?attr/rmgCyan"
+                        app:cornerRadius="16dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Both official Manager APKs are bundled with RMG and SHA-256 verified before installation. Android confirmation is always required."
+                        android:textColor="?attr/rmgMuted"
+                        android:gravity="center"
                         android:textSize="11sp"
-                        android:gravity="center" />
+                        android:lineSpacingExtra="3dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:text="The manager app and the in-kernel root backend are separate components. Changing the former does not replace the latter."
-                android:lineSpacingExtra="4dp"
-                android:textColor="@color/df_muted"
-                android:textSize="12sp" />
+                android:text="RMG  /  EXPLORATORY ROOT TOOL  /  S918N"
+                android:textColor="?attr/rmgMuted"
+                android:letterSpacing="0.05"
+                android:textSize="10sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

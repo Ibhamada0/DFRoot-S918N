@@ -1,76 +1,62 @@
 package df.root;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import df.root.databinding.ActivitySettingsBinding;
 
 public class SettingsActivity extends AppCompatActivity {
+    private static final int[] THEME_IDS = { R.id.themeObsidian, R.id.themeAurora, R.id.themeGlacier, R.id.themeEmber, R.id.themeMatrix, R.id.themeGalaxy };
     private ActivitySettingsBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int themeIndex = ThemePrefs.index(this);
+        setTheme(ThemePrefs.theme(this));
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         binding.toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         binding.toolbar.setNavigationOnClickListener(v -> finish());
 
-        if (ManagerChoice.isNext(this)) {
-            binding.radioNext.setChecked(true);
-        } else {
-            binding.radioClassic.setChecked(true);
-        }
-        binding.managerRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            ManagerChoice.save(this, checkedId != R.id.radioClassic);
-            refreshDetails();
-        });
-        binding.btnInstallSelected.setOnClickListener(v -> {
-            Intent installed = getPackageManager().getLaunchIntentForPackage(
-                ManagerChoice.packageName(this));
-            if (installed != null) {
-                startActivity(installed);
-            } else {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(
-                        ManagerChoice.releaseUrl(this))));
-                } catch (Exception e) {
-                    Toast.makeText(this, "Could not open the official release page",
-                        Toast.LENGTH_LONG).show();
+        binding.themeGroup.check(THEME_IDS[themeIndex]);
+        binding.themeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            for (int n = 0; n < THEME_IDS.length; ++n) {
+                if (THEME_IDS[n] == checkedId && ThemePrefs.index(this) != n) {
+                    ThemePrefs.choose(this, n);
+                    recreate();
+                    break;
                 }
             }
         });
-        refreshDetails();
+
+        binding.managerGroup.check(ManagerChoice.isNext(this)
+            ? R.id.radioNext : R.id.radioClassic);
+        binding.managerGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            ManagerChoice.save(this, checkedId == R.id.radioNext);
+            updateManager();
+        });
+        binding.btnOfflineInstall.setOnClickListener(v ->
+            OfflineManagerInstaller.openOrInstall(this));
+        updateManager();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (binding != null) refreshDetails();
+        if (binding != null) updateManager();
     }
 
-    private void refreshDetails() {
-        boolean next = ManagerChoice.isNext(this);
+    private void updateManager() {
         boolean installed = ManagerChoice.isInstalled(this);
-        String name = next ? "KernelSU Next" : "KernelSU (Samsung)";
-        binding.tvSelectedManager.setText(name);
-        binding.tvManagerInstalled.setText(installed
-            ? "MANAGER INSTALLED" : "MANAGER NOT INSTALLED");
-        binding.tvBackendCompatibility.setText(next
-            ? "COMPATIBLE BACKEND • NEXT"
-            : "BACKEND NOT AVAILABLE • CLASSIC");
-        binding.tvBackendDescription.setText(next
-            ? "This DFRoot build uses the bundled KernelSU Next ksud and an in-kernel Next package configuration. Root can be launched with this option after installing the Next Manager."
-            : "The original DFRoot project supports manager-aware bootstrapping, but this S918N fork has a Next-only bundled kernel module and ksud. Installing classic KernelSU does NOT switch that exploit backend. Root and start-on-boot are blocked while classic is selected to prevent a mismatched launch.");
-        binding.btnInstallSelected.setText(installed
-            ? "OPEN SELECTED MANAGER" : "GET SELECTED MANAGER");
-        binding.tvSourceInfo.setText(next
-            ? "Official source: KernelSU-Next/KernelSU-Next"
-            : "Official Samsung-compatible fork: diabl0w/KernelSU");
+        boolean next = ManagerChoice.isNext(this);
+        binding.tvManagerStatus.setText(
+            (next ? "KERNELSU NEXT" : "KERNELSU CLASSIC")
+            + (installed ? "  •  INSTALLED" : "  •  NOT INSTALLED"));
+        binding.btnOfflineInstall.setText(installed ?
+            "OPEN INSTALLED MANAGER" : "INSTALL SELECTED MANAGER OFFLINE");
+        binding.tvBackendNotice.setText(next
+            ? "The bundled RMG backend is tied to KernelSU Next. Even with Next installed, your device firmware must be vulnerable."
+            : "Classic installation works offline, but the bundled DFRoot kernel bootstrap still targets Next. Root launch is disabled for Classic to prevent an incompatible payload.");
     }
 }

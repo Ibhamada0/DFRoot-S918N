@@ -1,33 +1,25 @@
-# DFRoot S918N
+# RMG — DFRoot S918N
 
-Independent experimental DFRoot Android project for Samsung Galaxy S23 Ultra SM-S918N.
+Independent experimental Android rooting app, renamed **RMG**.
 
-## Premium control center
+## Visual identity
+Six themes are selectable from **Settings** and apply instantly across the app:
+**Obsidian**, **Aurora**, **Glacier**, **Ember**, **Matrix**, and **RMG Heritage**.
+RMG Heritage draws its warm ivory and amber palette from the Root My Galaxy visual references. This is a design inspiration, not a software dependency.
 
-- Premium dark theme with custom shield icon, live root status, firmware and kernel information.
-- Official KernelSU Next Manager button, launch and boot toggles, and copyable live logs.
-- The native DFRoot exploit code is unchanged from the upstream import.
+## SU Managers and offline installation
+Choose **KernelSU Next** or **KernelSU Classic (Samsung)** in Settings. Selection is persistent, changes which Manager app is detected, opened, or installed, and works entirely offline on the phone. Official pinned APKs are bundled during the GitHub Actions build and their SHA-256 digests are verified both by CI and before Android install.
 
-## Download from Releases
+- **Next v3.4.2** — official KernelSU-Next release, SHA-256 `774a5511f7034a4930e881114e202319cbdc34c5aaaa5c7c6b6d2902364e4c58`.
+- **Classic Samsung v2.2** — diabl0w KernelSU fork, SHA-256 `761dffad54ae080a4977971db7b04e2fc65c2d9b5e2336accca4a85661290a69`.
 
-Every successful main-branch build publishes `DFRoot-S918N.apk` and its SHA-256 checksum
-on [GitHub Releases](https://github.com/Ibhamada0/DFRoot-S918N/releases) as a prerelease.
-GitHub Actions also keeps a downloadable artifact.
+Android's install confirmation and per-app permission to install APKs are required.
 
-**Warning:** Experimental and not hardware-tested on SM-S918N firmware.
-DFRoot may change kernel security or SELinux state. Back up before trying.
-APK signing uses the upstream project's Android debug key (not production signing).
+**Important:** The bundled kernel bootstrap and ksud are **Next-specific**. The manager selector is real for install/open operations, but the **exploit backend is not dynamically swappable**. For Classic, root actions are blocked to avoid a misleading or unsafe kernel launch. The native exploit sources are unchanged.
 
-## Credits
+## GitHub release workflow
+Main branch builds release `RMG-S918N.apk` and its checksum automatically to [Releases](https://github.com/Ibhamada0/DFRoot-S918N/releases). These releases are experimental prereleases, debug-key-signed rather than production signed.
 
-[soumarcelino/DFRoot](https://github.com/soumarcelino/DFRoot),
-[diabl0w/DFRoot](https://github.com/diabl0w/DFRoot).
-Verify upstream redistribution licensing. No dependency on Root My Galaxy.
+Firmware/device root compatibility remains unverified; DFRoot may affect kernel and SELinux protections. Back up before using.
 
-## Settings: Manager choice and root backend
-
-The settings screen supports selecting, installing and opening either **KernelSU Next** or **KernelSU Classic (diabl0w's Samsung fork)**. Your selection is preserved in direct-boot-aware storage and controls the manager button.
-
-**Important backend limitation:** this DFRoot S918N fork bundles a Next-specific `ksud` and the kernel module hardcodes the Next package. Choosing the classic Manager does not modify the exploit backend. Therefore root launch and automatic boot-time root are intentionally blocked while Classic is selected. Next remains the only currently supported launch backend, and firmware compatibility is unverified.
-
-The upstream [diabl0w/DFRoot](https://github.com/diabl0w/DFRoot) has a different manager-agnostic bootstrap that consumes `libksud.so` from supported Manager apps. It is not interchangeable with the Next-specific kernel module in this fork without a separate compatible backend implementation and validation.
+Credit: [soumarcelino/DFRoot](https://github.com/soumarcelino/DFRoot) and [diabl0w/DFRoot](https://github.com/diabl0w/DFRoot). Check upstream licensing terms before redistribution.

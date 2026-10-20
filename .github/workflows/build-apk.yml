@@ -1,4 +1,5 @@
-name: Build and Release DFRoot S918N
+name: Build and Release RMG
+
 on:
   push:
     branches: [main]
@@ -8,24 +9,24 @@ permissions:
   contents: write
 
 concurrency:
-  group: dfroot-s918n-${{ github.ref }}
+  group: rmg-build-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 70
     steps:
-      - name: Checkout independent DFRoot S918N
+      - name: Checkout independent RMG project
         uses: actions/checkout@v4
 
-      - name: Verify Android sources
+      - name: Verify project
         run: |
           test -f app/build.gradle.kts
           test -f app/src/main/java/df/root/MainActivity.java
-          test -f app/src/main/res/layout/activity_main.xml
+          test -f app/src/main/java/df/root/OfflineManagerInstaller.java
 
-      - name: Set up Java 21
+      - name: Install Java 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -36,50 +37,73 @@ jobs:
         with:
           packages: 'platform-tools'
 
-      - name: Install Android build requirements
+      - name: Install Android SDK and NDK
         run: |
           sdkmanager --install "platforms;android-36" "build-tools;36.0.0" "ndk;27.0.12077973" "cmake;3.22.1"
 
-      - name: Build and verify APK
+      - name: Bundle verified official Managers for offline installation
+        shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p app/src/main/assets/managers
+          curl --fail --location --retry 3 --silent --show-error \
+            "https://github.com/KernelSU-Next/KernelSU-Next/releases/download/v3.4.2/KernelSU_Next_v3.4.2_33355-release.apk" \
+            -o app/src/main/assets/managers/ksu-next-v3.4.2.apk
+          curl --fail --location --retry 3 --silent --show-error \
+            "https://github.com/diabl0w/KernelSU/releases/download/samsung-v2.2/KernelSU_samsung-v2.2_32687-release.apk" \
+            -o app/src/main/assets/managers/ksu-samsung-v2.2.apk
+          echo "774a5511f7034a4930e881114e202319cbdc34c5aaaa5c7c6b6d2902364e4c58  app/src/main/assets/managers/ksu-next-v3.4.2.apk" | sha256sum -c -
+          echo "761dffad54ae080a4977971db7b04e2fc65c2d9b5e2336accca4a85661290a69  app/src/main/assets/managers/ksu-samsung-v2.2.apk" | sha256sum -c -
+
+      - name: Build RMG Android APK
+        run: |
+          set -euo pipefail
           chmod +x gradlew build.sh
           ./build.sh
-          cp dirtyfrag.apk DFRoot-S918N.apk
-          test -s DFRoot-S918N.apk
-          unzip -t DFRoot-S918N.apk | tail -1
-          sha256sum DFRoot-S918N.apk > DFRoot-S918N.apk.sha256
+          cp dirtyfrag.apk RMG-S918N.apk
+          test -s RMG-S918N.apk
+          unzip -t RMG-S918N.apk | tail -1
+          sha256sum RMG-S918N.apk > RMG-S918N.apk.sha256
 
-      - name: Upload CI artifact
+      - name: Upload GitHub Actions artifact
         uses: actions/upload-artifact@v4
         with:
-          name: DFRoot-S918N-APK
+          name: RMG-APK
           path: |
-            DFRoot-S918N.apk
-            DFRoot-S918N.apk.sha256
-          if-no-files-found: error
+            RMG-S918N.apk
+            RMG-S918N.apk.sha256
           retention-days: 30
+          if-no-files-found: error
 
-      - name: Publish GitHub Release
+      - name: Publish GitHub prerelease
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.1.0-build-${{ github.run_number }}
+          tag_name: v2.2.0-rmg-build-${{ github.run_number }}
           target_commitish: ${{ github.sha }}
-          name: DFRoot S918N | Premium UI | Build ${{ github.run_number }}
+          name: RMG | Six Themes + Offline Manager | Build ${{ github.run_number }}
           prerelease: true
           make_latest: false
           generate_release_notes: false
           body: |
-            ## DFRoot S918N - Premium UI
+            ## RMG - Six premium themes and offline KernelSU Manager installer
 
-            Modern dark control center with live device information, root-session
-            status, boot switches, KernelSU Next Manager access and copyable logs.
+            - App display name: RMG
+            - Six selectable themes (Obsidian, Aurora, Glacier, Ember, Matrix, RMG Heritage).
+            - Two verified Manager APKs are embedded for **fully offline installation on device**.
+            - Manager choice is saved and changes the APK the installation flow presents.
+            - No silent installation: Android always requires user approval.
 
-            Experimental, not validated on SM-S918N firmware. Back up first.
-            The APK uses the upstream project's debug signing key.
+            **Root runtime limitation:** this fork's kernel module and bundled ksud
+            are Next-specific. Selecting KernelSU Classic does NOT switch the root
+            backend; the root launch is blocked for Classic to avoid misconfiguration.
+            The native exploit and bundled root payload were not modified.
 
-            Built from: ${{ github.sha }}
+            Device/root compatibility is unverified. Back up your data first.
+            APK is signed with the project's default debug signing key.
+
+            Commit: ${{ github.sha }}
           files: |
-            DFRoot-S918N.apk
-            DFRoot-S918N.apk.sha256
+            RMG-S918N.apk
+            RMG-S918N.apk.sha256
           fail_on_unmatched_files: true

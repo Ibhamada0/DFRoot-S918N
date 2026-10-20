@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity implements IReporter {
     private static final String TAG = "dfroot";
     private ActivityMainBinding binding;
+    private int appliedTheme;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final Executor executor = Executors.newSingleThreadExecutor();
     private boolean running = false;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements IReporter {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        appliedTheme = ThemePrefs.index(this);
+        setTheme(ThemePrefs.theme(this));
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements IReporter {
             ClipboardManager cm =
                 (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             if (cm != null) {
-                cm.setPrimaryClip(ClipData.newPlainText("DFRoot S918N logs",
+                cm.setPrimaryClip(ClipData.newPlainText("RMG logs",
                     binding.outputView.getText()));
                 Toast.makeText(this, "Logs copied", Toast.LENGTH_SHORT).show();
             }
@@ -127,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements IReporter {
     @Override
     protected void onResume() {
         super.onResume();
+        if (ThemePrefs.index(this) != appliedTheme) {
+            recreate();
+            return;
+        }
         if (binding != null && !running) {
             refreshRootState();
             refreshSelinux();
@@ -134,25 +141,13 @@ public class MainActivity extends AppCompatActivity implements IReporter {
     }
 
     private void openManager() {
-        Intent launch = getPackageManager().getLaunchIntentForPackage(
-            ManagerChoice.packageName(this));
-        if (launch != null) {
-            startActivity(launch);
-            return;
-        }
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse(ManagerChoice.releaseUrl(this))));
-        } catch (Exception e) {
-            Toast.makeText(this, "Unable to open official Manager release",
-                Toast.LENGTH_LONG).show();
-        }
+        OfflineManagerInstaller.openOrInstall(this);
     }
 
     private void updateManagerButton() {
         String name = ManagerChoice.isNext(this) ? "KERNELSU NEXT" : "KERNELSU CLASSIC";
         binding.btnManager.setText(
-            (ManagerChoice.isInstalled(this) ? "OPEN " : "GET ") + name + " MANAGER");
+            (ManagerChoice.isInstalled(this) ? "OPEN " : "INSTALL OFFLINE ") + name);
     }
 
     private void refreshRootState() {
@@ -187,7 +182,9 @@ public class MainActivity extends AppCompatActivity implements IReporter {
 
     private void setStatus(String label, String detail, int color) {
         binding.tvStatus.setText(label);
-        binding.tvStatus.setTextColor(getColor(color));
+        int themeAttr = color == R.color.df_good ? R.attr.rmgGood
+            : color == R.color.df_warning ? R.attr.rmgWarning : R.attr.rmgIce;
+        binding.tvStatus.setTextColor(ThemePrefs.color(this, themeAttr));
         binding.tvStatusDetail.setText(detail);
     }
 
