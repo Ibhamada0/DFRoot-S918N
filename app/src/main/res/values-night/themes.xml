@@ -1,3 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Theme.DirtyFrag" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Base.Theme.DirtyFrag" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/df_cyan</item>
+        <item name="colorOnPrimary">@color/df_bg</item>
+        <item name="colorSecondary">@color/df_ice</item>
+        <item name="colorSurface">@color/df_panel</item>
+        <item name="colorOnSurface">@color/df_text</item>
+        <item name="android:colorAccent">@color/df_cyan</item>
+        <item name="android:windowBackground">@color/df_bg</item>
+        <item name="android:statusBarColor">@color/df_bg</item>
+        <item name="android:navigationBarColor">@color/df_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+    <style name="Theme.DirtyFrag" parent="Base.Theme.DirtyFrag" />
 </resources>

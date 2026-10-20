@@ -2,4 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="df_bg">#070D19</color>
+    <color name="df_panel">#101B2D</color>
+    <color name="df_card_alt">#1D314B</color>
+    <color name="df_console">#0A1221</color>
+    <color name="df_border">#253852</color>
+    <color name="df_cyan">#52E6E0</color>
+    <color name="df_ice">#A9F2F5</color>
+    <color name="df_text">#F5F9FF</color>
+    <color name="df_secondary">#C3D3E5</color>
+    <color name="df_muted">#96AFC9</color>
+    <color name="df_terminal">#9DE8D7</color>
+    <color name="df_good">#7CE5B7</color>
+    <color name="df_warning">#FFCF86</color>
+    <color name="df_error">#FF91A1</color>
 </resources>
